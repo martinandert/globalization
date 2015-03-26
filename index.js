@@ -26,6 +26,7 @@ function isSymbol(key) {
 function Counterpart() {
   this._registry = {
     locale: 'en',
+    fallbackLocale: 'en',
     scope: null,
     translations: {},
     interpolations: {},
@@ -49,6 +50,21 @@ Counterpart.prototype.setLocale = function(value) {
   if (previous != value) {
     this._registry.locale = value;
     this.emit('localechange', value, previous);
+  }
+
+  return previous;
+};
+
+Counterpart.prototype.getFallbackLocale = function() {
+  return this._registry.fallbackLocale;
+};
+
+Counterpart.prototype.setFallbackLocale = function(value) {
+  var previous = this._registry.fallbackLocale;
+
+  if (previous != value) {
+    this._registry.fallbackLocale = value;
+    this.emit('fallbacklocalechange', value, previous);
   }
 
   return previous;
@@ -119,6 +135,22 @@ Counterpart.prototype.translate = function(key, options) {
     entry = this._fallback(locale, scope, key, options.fallback, options);
   }
 
+  if (entry === null && locale != this._registry.fallbackLocale) {
+    var keys2 = this._normalizeKeys(this._registry.fallbackLocale, scope, key, separator);
+    entry = keys2.reduce(function(result, key) {
+      if (Object.prototype.toString.call(result) === '[object Object]' && Object.prototype.hasOwnProperty.call(result, key)) {
+        return result[key];
+      } else {
+        return null;
+      }
+    }, this._registry.translations);
+    console.log('entry=', entry);
+    if (entry !== null) {
+      // Update locale to fallback locale
+      locale = this._registry.fallbackLocal;
+    }
+  }
+  
   if (entry === null) {
     entry = 'missing translation: ' + keys.join(separator);
   }
