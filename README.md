@@ -94,7 +94,7 @@ There is also a `getSeparator` function which returns the currently set default 
 
 Translations can contain interpolation variables which will be replaced by values passed to the function as part of the options object, with the keys matching the interpolation variable names.
 
-*E.g.*, with a translation `{ foo: 'foo %(bar)s' }` the option value for the key `bar` will be interpolated into the translation:
+*E.g.*, with a translation `{ foo: 'foo %(bar)' }` the option value for the key `bar` will be interpolated into the translation:
 
 ```js
 translate('foo', { bar: 'baz' }) // => 'foo baz'
