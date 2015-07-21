@@ -326,7 +326,7 @@ describe('translate', function() {
 
         var prev = instance.setInterpolate(false);
         assert.equal(instance.translate('hello'), 'Hello from %(brand)s!');
-        assert.equal(instance.translate('hello', { interpolate: true }), 'Hello from %(brand)s!');
+        assert.equal(instance.translate('hello', { interpolate: true }), 'Hello from Z!');
         instance.setInterpolate(prev);
 
         instance._registry.interpolations = current;
