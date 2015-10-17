@@ -234,7 +234,17 @@ translate('my_namespace.greeting', { visitor: 'Martin', app_name: 'The Foo App' 
 // => 'Welcome to The Foo App, Martin!'
 ```
 
-As you can see in the last line of the example, interpolations you give as options to the `translate` function take precedence over registered interpolations.
+### Registering translate hook
+
+You can register a translate hook to interact with the parameters before the actual translation is done:
+
+```js
+translate.registerOnTranslate(function(args) {
+  console.log(args.key); // shows the original key
+  console.log(args.options); // shows the original options object
+});
+
+```
 
 ### Localization
 
