@@ -149,13 +149,25 @@ Counterpart.prototype.removeTranslationNotFoundListener = function(callback) {
   this.removeListener('translationnotfound', callback);
 };
 
+Counterpart.prototype.registerOnTranslate = function(callback) {
+  this._onTranslate = callback;
+};
+
 Counterpart.prototype.translate = function(key, options) {
+  
   if (!isArray(key) && !isString(key) || !key.length) {
     throw new Error('invalid argument: key');
   }
 
   if (isSymbol(key)) {
     key = key.substr(1);
+  }
+
+  if (this._onTranslate) {
+    var args = { key: key, options: options };
+    this._onTranslate(args);
+    key = args.key,
+    options = args.options;
   }
 
   options = extend(true, {}, options);

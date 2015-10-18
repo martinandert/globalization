@@ -667,6 +667,42 @@ describe('translate', function() {
     });
   });
 
+  describe('#registerOnTranslate', function() {
+    it('is a function', function() {
+      assert.isFunction(instance.registerOnTranslate);
+    });
+
+    it('is called when translating', function(done) {
+      var handler = function() { done(); };
+      instance.registerOnTranslate(handler);
+      instance.translate('foo');
+    });
+
+    describe('when called', function() {
+      it('exposes the key and options as arguments', function() {
+        var handler = function(args) { 
+          
+          assert.equal('foo', args.key);
+          assert.deepEqual({ fallback: 'bar' }, args.options);
+        };
+        instance.registerOnTranslate(handler);
+        var translation = instance.translate('foo', { fallback:'bar' });
+      });
+
+      it('can be changed by the callback', function() {
+        instance.registerTranslations('xx', { fooChanged: 'bar-changed' });
+        
+        var handler = function(args) { 
+          assert.equal('bar', args.key);
+          args.key = "fooChanged";
+        };
+        instance.registerOnTranslate(handler);
+        var translation = instance.translate('bar', { locale: 'xx' });
+        assert.equal("bar-changed", translation);
+      });
+    });
+  });
+
   describe('#getSeparator', function() {
     it('is a function', function() {
       assert.isFunction(instance.getSeparator);
