@@ -209,7 +209,8 @@ Counterpart.prototype.translate = function(key, options) {
   }
 
   if (entry === null) {
-    entry = 'missing translation: ' + keys.join(separator);
+    entry = keys[1];
+    console.log('counterpart missing translation: ' + keys.join(separator));
   }
 
   entry = this._pluralize(locale, entry, options.count);
