@@ -230,6 +230,8 @@ Counterpart.prototype.translate = function(key, options) {
 
   if (this._registry.interpolate !== false && options.interpolate !== false) {
     entry = this._interpolate(entry, options);
+  } else if (!this._registry.interpolate && options.interpolate) {
+    entry = this._interpolate(entry, options);
   }
 
   return entry;
